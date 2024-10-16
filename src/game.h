@@ -1,11 +1,10 @@
-#ifndef HEADER_H
-#define HEADER_H
+#ifndef GAME_H
+#define GAME_H
 
 #include <SDL2/SDL.h>
 #include <time.h>
 #include <stdlib.h> 
 
-// Taille de la grille
 #define GRID_SIZE 20
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480

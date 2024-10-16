@@ -2,7 +2,7 @@
 
 void draw_snake_head(SDL_Renderer *renderer, int x, int y) {
     SDL_Rect head_rect = {x, y, SNAKE_SIZE, SNAKE_SIZE};
-    SDL_SetRenderDrawColor(renderer, 57, 62, 70, 255);
+    SDL_SetRenderDrawColor(renderer, 255, 80, 80, 255);
     SDL_RenderFillRect(renderer, &head_rect);
 }
 

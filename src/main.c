@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        SDL_SetRenderDrawColor(renderer, 160, 71, 71, 255);
+        SDL_SetRenderDrawColor(renderer, 96, 63, 38, 255);
         SDL_RenderClear(renderer);
 
         draw_grid(renderer);
