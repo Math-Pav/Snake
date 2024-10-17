@@ -3,7 +3,7 @@
 // Dessine la tete du serpent à une position (x et y) avec une couleur distincte
 void draw_snake_head(SDL_Renderer *renderer, int x, int y) {
     SDL_Rect head_rect = {x, y, SNAKE_SIZE, SNAKE_SIZE};
-    SDL_SetRenderDrawColor(renderer, 255, 80, 80, 255);
+    SDL_SetRenderDrawColor(renderer, 17, 138, 178, 255);
     SDL_RenderFillRect(renderer, &head_rect);
 }
 
@@ -41,7 +41,7 @@ void move_snake(SnakeSegment snake[], int* snake_length, int dir_x, int dir_y) {
 
 // Dessine une grille selon la taille de l'écran
 void draw_grid(SDL_Renderer* renderer) {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_SetRenderDrawColor(renderer, 7, 59, 76, 255);
     for (int x = 0; x < GRID_WIDTH; ++x) {
         for (int y = 0; y < GRID_HEIGHT; ++y) {
             SDL_Rect cell = { x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE };

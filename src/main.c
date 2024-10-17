@@ -105,7 +105,7 @@ int main(int argc, char* argv[]){
         }
 
         // Gestion de SDL et de fonction pour le jeu
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_SetRenderDrawColor(renderer, 253, 240, 213, 255);
         SDL_RenderClear(renderer);
 
         draw_grid(renderer);
