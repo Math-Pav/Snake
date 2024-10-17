@@ -83,3 +83,29 @@ void draw_bad_food(SDL_Renderer* renderer, Bad_Food bad_food) {
     SDL_Rect fruit = { bad_food.x * GRID_SIZE, bad_food.y * GRID_SIZE, GRID_SIZE, GRID_SIZE };
     SDL_RenderFillRect(renderer, &fruit);
 }
+
+void draw_score(SDL_Renderer* renderer, int score, TTF_Font* font) {
+    SDL_Color color = {255, 255, 255, 255};
+    char score_text[50];
+    sprintf(score_text, "Score: %d", score);
+
+    // Créer une surface à partir du texte
+    SDL_Surface* surface = TTF_RenderText_Solid(font, score_text, color);
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+    // Calculer la position pour centrer le texte
+    int x_position = (SCREEN_WIDTH - surface->w) / 2;
+    SDL_Rect score_rect = {x_position, GRID_HEIGHT * GRID_SIZE + (SCORE_BAR_HEIGHT - surface->h) / 2, surface->w, surface->h}; // Centre verticalement
+
+    SDL_RenderCopy(renderer, texture, NULL, &score_rect);
+
+    SDL_FreeSurface(surface);
+    SDL_DestroyTexture(texture);
+}
+
+// Dessine la barre en bas de l'écran pour le score
+void draw_score_bar(SDL_Renderer* renderer) {
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_Rect score_bar = {0, GRID_HEIGHT * GRID_SIZE, SCREEN_WIDTH, SCORE_BAR_HEIGHT}; // Position de la barre
+    SDL_RenderFillRect(renderer, &score_bar);
+}

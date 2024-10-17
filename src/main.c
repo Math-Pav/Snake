@@ -30,6 +30,13 @@ int main(int argc, char* argv[]){
         return 1;
     }
 
+    //Initialisation de SDL_TTF
+    if (TTF_Init() == -1) {
+        printf("Erreur lors de l'initialisation de SDL_ttf: %s\n", TTF_GetError());
+        SDL_Quit();
+    return 1;
+    }
+
     // Création de la fenetre
     SDL_Window* window = SDL_CreateWindow("Snake SDL2", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (!window) {
@@ -46,6 +53,17 @@ int main(int argc, char* argv[]){
         SDL_Quit();
         return 1;
     }
+
+    TTF_Font* font = TTF_OpenFont("COMICATE.TTF", 24); // Chemin vers une police TTF
+    if (!font) {
+        printf("Erreur lors du chargement de la police: %s\n", TTF_GetError());
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        TTF_Quit();
+        SDL_Quit();
+        return 1;
+    }
+
     
     // Boucle principale du jeu
     while (running) {
@@ -86,8 +104,7 @@ int main(int argc, char* argv[]){
         }
 
         // Test la condition de victoire pour le mode malus
-        if (mode == 1 && snake_length == VERSION_MALU_WINNING_LENTGH)
-        {
+        if (mode == 1 && snake_length == VERSION_MALU_WINNING_LENTGH) {
             printf("Bravo, vous êtes le BOSS du snake !!!\n");
             running = 0;
         }
@@ -97,6 +114,10 @@ int main(int argc, char* argv[]){
             running = 0;
         }
 
+        if (snake[0].y >= GRID_HEIGHT) {
+            running = 0;
+        }
+        
         // Test si le serpent se mort 
         for (int i = 1; i < snake_length; i++) {
             if (snake[0].x == snake[i].x && snake[0].y == snake[i].y) {
@@ -111,10 +132,13 @@ int main(int argc, char* argv[]){
         draw_grid(renderer);
         draw_snake(renderer, snake, snake_length);
         draw_food(renderer, food);
-        
+
         if (mode == 1){
             draw_bad_food(renderer, bad_food);
         }
+        
+        draw_score_bar(renderer);
+        draw_score(renderer, snake_length, font);
         
         SDL_RenderPresent(renderer);
 
@@ -124,6 +148,8 @@ int main(int argc, char* argv[]){
     // Détruit le renderer, la window et quitte SDL
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    TTF_CloseFont(font);
+    TTF_Quit();
     SDL_Quit();
 
     return 0;
