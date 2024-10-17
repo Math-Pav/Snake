@@ -58,6 +58,16 @@ void generate_food(Food* food, Bad_Food* bad_food, SnakeSegment snake[], int sna
         valid = 1;
         food->x = rand() % GRID_WIDTH;
         food->y = rand() % GRID_HEIGHT;
+
+        int random_value = rand() % 6;
+        if (random_value == 0 || random_value == 1) {
+            food->type = Banana_food;
+        }else if (random_value == 2) {
+            food->type = Coco_food;
+        }else{
+            food->type = Apple_food;
+        }
+        
         bad_food->x = rand() % GRID_WIDTH;
         bad_food->y = rand() % GRID_HEIGHT;
 
@@ -70,9 +80,16 @@ void generate_food(Food* food, Bad_Food* bad_food, SnakeSegment snake[], int sna
     }
 }
 
-// Dessine la nourriture qui augmente le serpent de + 1
+// Dessine la nourriture
 void draw_food(SDL_Renderer* renderer, Food food) {
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    if (food.type == Banana_food) {
+        SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+    } else if (food.type == Coco_food) {
+        SDL_SetRenderDrawColor(renderer, 139, 69, 19, 255); 
+    } else {
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    }
+
     SDL_Rect fruit = { food.x * GRID_SIZE, food.y * GRID_SIZE, GRID_SIZE, GRID_SIZE };
     SDL_RenderFillRect(renderer, &fruit);
 }
@@ -84,6 +101,7 @@ void draw_bad_food(SDL_Renderer* renderer, Bad_Food bad_food) {
     SDL_RenderFillRect(renderer, &fruit);
 }
 
+// Dessine le score au milieu de la barre
 void draw_score(SDL_Renderer* renderer, int score, TTF_Font* font) {
     SDL_Color color = {255, 255, 255, 255};
     char score_text[50];
@@ -95,7 +113,7 @@ void draw_score(SDL_Renderer* renderer, int score, TTF_Font* font) {
 
     // Calculer la position pour centrer le texte
     int x_position = (SCREEN_WIDTH - surface->w) / 2;
-    SDL_Rect score_rect = {x_position, GRID_HEIGHT * GRID_SIZE + (SCORE_BAR_HEIGHT - surface->h) / 2, surface->w, surface->h}; // Centre verticalement
+    SDL_Rect score_rect = {x_position, GRID_HEIGHT * GRID_SIZE + (SCORE_BAR_HEIGHT - surface->h) / 2, surface->w, surface->h};
 
     SDL_RenderCopy(renderer, texture, NULL, &score_rect);
 

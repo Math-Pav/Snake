@@ -54,7 +54,8 @@ int main(int argc, char* argv[]){
         return 1;
     }
 
-    TTF_Font* font = TTF_OpenFont("COMICATE.TTF", 24); // Chemin vers une police TTF
+    // Création de la police de texte
+    TTF_Font* font = TTF_OpenFont("COMICATE.TTF", 24);
     if (!font) {
         printf("Erreur lors du chargement de la police: %s\n", TTF_GetError());
         SDL_DestroyRenderer(renderer);
@@ -64,7 +65,6 @@ int main(int argc, char* argv[]){
         return 1;
     }
 
-    
     // Boucle principale du jeu
     while (running) {
         while (SDL_PollEvent(&event)) {
@@ -84,13 +84,41 @@ int main(int argc, char* argv[]){
 
         // Test pour ajouter de la longueur au serpent (mode normal)
         if (snake[0].x == food.x && snake[0].y == food.y) {
-            if (snake_length < WINNING_LENGTH)
-            {
-                snake_length++;
+            if (snake_length < WINNING_LENGTH) {
+                if (food.type == Apple_food || food.type == Banana_food) {
+                    snake_length++;
+                
+                    if (food.type == Banana_food) {
+                        if (rand() % 2 == 0) {
+                            int temp = dir_x;
+                            dir_x = -dir_y;
+                            dir_y = temp;
+                        } else {
+                            int temp = dir_x;
+                            dir_x = dir_y;
+                            dir_y = -temp;
+                        }
+                        printf("Vous avez mangé une banane, direction changée !!\n");
+                    }
+                    generate_food(&food, &bad_food, snake, snake_length);
+                }
+            
+            else if (food.type == Coco_food) {
+                int new_x = rand() % GRID_WIDTH;
+                int new_y = rand() % GRID_HEIGHT;
+
+                int offset_x = new_x - snake[0].x;
+                int offset_y = new_y - snake[0].y;
+
+                for (int i = 0; i < snake_length; i++) {
+                    snake[i].x += offset_x;
+                    snake[i].y += offset_y;
+                }
+                printf("Vous avez mangé une coco, BOUM téléportation !!\n");
                 generate_food(&food, &bad_food, snake, snake_length);
+                }
             }
         }
-
         // Test la condition de victoire pour le mode normal
         if (snake_length == WINNING_LENGTH) {
             printf("Bravo, vous êtes le BOSS du snake !!!\n");
@@ -114,6 +142,7 @@ int main(int argc, char* argv[]){
             running = 0;
         }
 
+        // Test si le serpent touche la barre de score
         if (snake[0].y >= GRID_HEIGHT) {
             running = 0;
         }
@@ -145,7 +174,7 @@ int main(int argc, char* argv[]){
         SDL_Delay(100);
     }
 
-    // Détruit le renderer, la window et quitte SDL
+    // Fontion pour fermer le programme sans allouer de la mémoire
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     TTF_CloseFont(font);
