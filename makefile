@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -g -I src
-LDFLAGS = -lSDL2
+LDFLAGS = -lSDL2 -lSDL2_ttf
 TARGET = snake
 
 SRC_DIR = src
