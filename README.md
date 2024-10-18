@@ -41,7 +41,7 @@ Avant de compiler et exécuter le projet, assurez-vous que les bibliothèques su
  
 ### Méthode de Compilation 
 
-Le projet utilise un **Makefile** pour simplifier la compilation. Pour compiler le jeu, exécuter simplement avec la commande suivante dans votre terminal.
+Le projet utilise un **Makefile** pour simplifier la compilation. Pour compiler le jeu, exécuter simplement avec la commande suivante dans votre terminal,
 `make`
 Si, compilation réussite alors un fichier exécutable nommé snake sera crée dans le répetoire courant.
 
