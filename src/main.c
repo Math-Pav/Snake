@@ -6,7 +6,7 @@ int main(int argc, char* argv[]){
 
     printf("Choisissez le mode de jeu :\n");  // Choix du mode de Jeu
     printf("0 - Mode Normal\n");
-    printf("1 - Mode avec fruit malus\n");
+    printf("1 - Mode avec différents fruits\n");
     printf("Entrez votre choix : ");
     scanf("%d", &mode);
 
@@ -16,7 +16,7 @@ int main(int argc, char* argv[]){
 
     Food food;
     Bad_Food bad_food;
-    generate_food(&food, &bad_food, snake, snake_length); // Appel la fonction pour générer la nourriture 
+    generate_food(&food, &bad_food, snake, snake_length, mode); // Appel la fonction pour générer la nourriture 
 
     int dir_x = 1, dir_y = 0; 
 
@@ -87,8 +87,9 @@ int main(int argc, char* argv[]){
             if (snake_length < WINNING_LENGTH) {
                 if (food.type == Apple_food || food.type == Banana_food) {
                     snake_length++;
-                
-                    if (food.type == Banana_food) {
+
+                    // Fruit pour le changement de direction
+                    if (mode == 1 && food.type == Banana_food) {
                         if (rand() % 2 == 0) {
                             int temp = dir_x;
                             dir_x = -dir_y;
@@ -100,10 +101,11 @@ int main(int argc, char* argv[]){
                         }
                         printf("Vous avez mangé une banane, direction changée !!\n");
                     }
-                    generate_food(&food, &bad_food, snake, snake_length);
+                    generate_food(&food, &bad_food, snake, snake_length, mode);
                 }
             
-            else if (food.type == Coco_food) {
+            // Fruit pour la téléportation
+            else if (mode == 1 && food.type == Coco_food) {
                 int new_x = rand() % GRID_WIDTH;
                 int new_y = rand() % GRID_HEIGHT;
 
@@ -114,8 +116,10 @@ int main(int argc, char* argv[]){
                     snake[i].x += offset_x;
                     snake[i].y += offset_y;
                 }
+                snake_length++;
+
                 printf("Vous avez mangé une coco, BOUM téléportation !!\n");
-                generate_food(&food, &bad_food, snake, snake_length);
+                generate_food(&food, &bad_food, snake, snake_length, mode);
                 }
             }
         }
@@ -128,7 +132,7 @@ int main(int argc, char* argv[]){
         // Test pour enlever de la longueur au serpent (mode malus)
         if (mode == 1 && snake[0].x == bad_food.x && snake[0].y == bad_food.y) {
             snake_length--;
-            generate_food(&food, &bad_food, snake, snake_length);
+            generate_food(&food, &bad_food, snake, snake_length, mode);
         }
 
         // Test la condition de victoire pour le mode malus

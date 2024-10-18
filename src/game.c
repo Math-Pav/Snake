@@ -51,7 +51,7 @@ void draw_grid(SDL_Renderer* renderer) {
 }
 
 // Génére de la nourriture à une position aléatoire
-void generate_food(Food* food, Bad_Food* bad_food, SnakeSegment snake[], int snake_length) {
+void generate_food(Food* food, Bad_Food* bad_food, SnakeSegment snake[], int snake_length, int mode) {
     int valid = 0;
 
     while (!valid) {
@@ -59,18 +59,28 @@ void generate_food(Food* food, Bad_Food* bad_food, SnakeSegment snake[], int sna
         food->x = rand() % GRID_WIDTH;
         food->y = rand() % GRID_HEIGHT;
 
-        int random_value = rand() % 6;
-        if (random_value == 0 || random_value == 1) {
-            food->type = Banana_food;
-        }else if (random_value == 2) {
-            food->type = Coco_food;
-        }else{
+        // Choix du fruit avec un % pour chaque fruit
+
+        if (mode == 1) {
+            int random_value = rand() % 6;
+            if (random_value == 0 || random_value == 1) {
+                food->type = Banana_food;
+            }else if (random_value == 2) {
+                food->type = Coco_food;
+            }else{
+            food->type = Apple_food;
+            }
+        }
+
+        if (mode == 0) {
             food->type = Apple_food;
         }
+        
         
         bad_food->x = rand() % GRID_WIDTH;
         bad_food->y = rand() % GRID_HEIGHT;
 
+        // Boucle pour éviter que le fruit spawn sur le serpent
         for (int i = 0; i < snake_length; i++) {
             if (snake[i].x == food->x && snake[i].y == food->y && snake[i].x == bad_food->x && snake[i].y == bad_food->y) {
                 valid = 0;

@@ -39,7 +39,7 @@ typedef struct {
 }Bad_Food;
 
 void draw_snake_head(SDL_Renderer *renderer, int x, int y);
-void generate_food(Food* food, Bad_Food* bad_food, SnakeSegment snake[], int snake_length);
+void generate_food(Food* food, Bad_Food* bad_food, SnakeSegment snake[], int snake_length, int mode);
 void draw_food(SDL_Renderer* renderer, Food food);
 void draw_bad_food(SDL_Renderer* renderer, Bad_Food bad_food);
 void init_snake(SnakeSegment snake[], int* snake_length);
